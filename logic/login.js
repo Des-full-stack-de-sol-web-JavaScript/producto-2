@@ -36,7 +36,7 @@ function validateEmailField(email) {
 function validatePasswordField(password) {
     const value = password.value.trim();
     if (!value) return "Contraseña obligatoria.";
-    if (value.length < 6) return "Mínimo 6 caracteres.";
+    if (value.length < 8) return "Mínimo 8 caracteres.";
     return "";
 }
 
