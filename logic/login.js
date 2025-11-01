@@ -1,3 +1,12 @@
+import { loguearUsuario } from "./almacenaje.js";
+import { headerComponent, updateHeaderDisplay } from "../components/header.js";
+
+import { initusers } from './almacenaje.js';
+initusers();
+
+
+headerComponent();
+
 function showError(input, message) {
     input.classList.add('is-invalid');
     const feedback = input.parentElement.querySelector('.invalid-feedback');
@@ -41,6 +50,7 @@ function validatePasswordField(password) {
 }
 
 
+
 function loginPage() {
     console.log("Login Page Loaded");
 
@@ -48,35 +58,38 @@ function loginPage() {
     const emailInput = loginForm.querySelector('#email');
     const passwordInput = loginForm.querySelector('#password');
     const loginMessage = document.querySelector('#loginMessage');
-    
-    loginForm.addEventListener('submit', function(event) {
-        const inputs = [emailInput, passwordInput];
-        const emailValue = emailInput.value.trim();
-        let valid = true;
 
-        event.preventDefault();
+    clearFieldError([emailInput, passwordInput]);
 
-        clearFieldError(inputs);
-        const emailError = validateEmailField(emailInput);
-        const passwordError = validatePasswordField(passwordInput);
+    loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-        if (emailError) { showError(emailInput, emailError); valid = false; }
-        if (passwordError) { showError(passwordInput, passwordError); valid = false; }
-        if (!valid) return;
+    let valid = true;
+    const emailError = validateEmailField(emailInput);
+    const passwordError = validatePasswordField(passwordInput);
 
-        localStorage.setItem('email', emailValue);
 
-        const userEmailSpan = document.querySelector('.navbar-text.text-muted');
-        if (userEmailSpan) userEmailSpan.textContent = emailValue;
+    if (emailError) { showError(emailInput, emailError); valid = false; }
+    if (passwordError) { showError(passwordInput, passwordError); valid = false; }
+    if (!valid) return;
 
-        loginMessage.innerHTML = `<div class="alert alert-success mt-3">Bienvenido ${emailValue}</div>`;
+    const loginOk = loguearUsuario(emailInput.value.trim(), passwordInput.value.trim());
 
-        loginForm.reset();
-        setTimeout(() => { window.location.href = '../index.html';}, 2500);
+     if (loginOk) {
+      loginMessage.innerHTML = `<div class="alert alert-success mt-3">Bienvenido!</div>`;
 
-    });
+      updateHeaderDisplay();
+
+       // Redirigimos después de 2 segundos
+      setTimeout(() => {
+        window.location.href = '../index.html';
+      }, 2000);
+    } else {
+      loginMessage.innerHTML = `<div class="alert alert-danger mt-3">Correo o contraseña incorrectos.</div>`;
+    }
+
+    loginForm.reset();
+  });
 }
 
-
 loginPage();
-
