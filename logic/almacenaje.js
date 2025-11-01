@@ -100,3 +100,93 @@ export function borrarVoluntariado(id) {
         };
     });
 }
+
+// Inicializa la lista de usuarios en localStorage
+
+export function initusers() {
+    if(!localStorage.getItem("usersList")){
+      const  users = [
+  {
+    rol: "usuario",
+    nombre: "Kevin",
+    email: "kevin.gomez@gmail.com",
+    password: "password123" 
+  },
+  {
+    rol: "usuario",
+    nombre: "Thabata",
+    email: "thabata.diaz@gmail.com",
+    password: "password123"
+  },
+  {
+    rol: "usuario",
+    nombre: "Anna",
+    email: "anna.ruiz@gmail.com",
+    password: "password123"
+  },
+  {
+    rol: "usuario",
+    nombre: "Mar",
+    email: "mar.sanchez@gmail.com",
+    password: "password123"
+  },
+  {
+    rol: "usuario",
+    nombre: "Pol",
+    email: "pol.lopez@gmail.com",
+    password: "password123"
+  },
+  {
+    rol: "usuario",
+    nombre: "Lia",
+    email: "lia.martin@gmail.com",
+    password: "password123"
+  },
+  {
+    rol: "usuario",
+    nombre: "Rau",
+    email: "rau.perez@gmail.com",
+    password: "password123"
+  },
+  {
+    rol: "usuario",
+    nombre: "Jor",
+    email: "jor.fernandez@gmail.com",
+    password: "password123"
+  }
+];
+    const userJson = JSON.stringify(users);
+    localStorage.setItem("usersList", userJson)
+    }
+    
+
+}
+
+//La función almacenaje.loguearUsuario se utiliza para autenticar al usuario.
+
+export function loguearUsuario (emailLogin, passwordLogin){
+    const users = JSON.parse(localStorage.getItem("usersList")) || [];
+    const login =  users.find(u => u.email === emailLogin && u.password === passwordLogin);
+
+    if(login){
+        localStorage.setItem("activeUser", JSON.stringify(login));
+        return true;
+
+    }else {
+        return false;
+    }
+}
+
+export function logoutUser (){
+    localStorage.removeItem("activeUser");
+}
+
+//almacenaje.obtenerUsuarioActivo se utiliza para obtener el usuario activo.
+
+export function getActiveUser(){
+     const userJSON = localStorage.getItem("activeUser");
+    if (!userJSON) return null;
+
+    return JSON.parse(userJSON);
+
+}
