@@ -1,16 +1,34 @@
+import { getActiveUser, logoutUser } from "../logic/almacenaje.js";
+
+export function updateHeaderDisplay() {
+  const headerSpan = document.querySelector('.navbar-text');
+  if (!headerSpan) return;
+
+  const active = getActiveUser();
+  if (active) {
+    headerSpan.textContent = active.nombre;
+    headerSpan.classList.remove('text-muted');
+    headerSpan.classList.add('text-white');
+  } else {
+    headerSpan.textContent = '-no login-';
+    headerSpan.classList.remove('text-white');
+    headerSpan.classList.add('text-muted');
+  }
+}
+
 export function headerComponent() {
   const isGithubPages = window.location.hostname.includes("github.io");
   const BASE_PATH = isGithubPages ? "/producto-1/" : "/";
 
   const header = document.querySelector("#header");
-  const currentUser = window.localStorage.getItem('email');
+  const currentUser = getActiveUser();
   console.log("currentUser", currentUser);
 
   let userAreaHtml = '';
   if (currentUser) {
     userAreaHtml = `
         <span class="navbar-text text-white me-2">
-          ${currentUser} 
+          ${currentUser.nombre} 
         </span>
         <button class="btn btn-outline-light btn-sm ms-2" id="logoutButton">Logout</button>
       `;
@@ -56,16 +74,17 @@ export function headerComponent() {
       </nav>
     `;
 
+    
 
-  if (currentUser) {
-    const logoutButton = header.querySelector("#logoutButton");
-    if (logoutButton) {
-      logoutButton.addEventListener('click', () => {
-        window.localStorage.removeItem('email');
-        window.location.href = `${BASE_PATH}index.html`; 
-      });
-    }
+ if (currentUser) {
+  const logoutButton = header.querySelector("#logoutButton");
+  if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+      logoutUser(); 
+      window.location.href = `${BASE_PATH}index.html`;
+    });
   }
+}
 
   return header;
 }
