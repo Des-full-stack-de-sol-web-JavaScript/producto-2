@@ -25,11 +25,49 @@
     <!-- Icono -->
     <link rel="icon" type="image/png" href="../assets/favorite.ico" />
 
-    <title>Alta Usuarios</title>
+        <title>Alta Usuarios</title>
   </head>
   <body id="alta-usuario-page">
     <header id="header">
       <!-- Content loaded dinamically using JS -->
+      <!-- Placeholder para mostrar el usuario activo -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Voluntariado App</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="login.html">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="voluntariados.html">Voluntariados</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="usuarios.html">Usuarios</a>
+              </li>
+            </ul>
+            <span class="navbar-text">
+              Usuario Activo:
+              <strong id="usuarioActivo">-no login-</strong>
+            </span>
+          </div>
+        </div>
+      </nav>
+      <!-- FIN Placeholder -->
     </header>
 
     <main class="container my-4">
