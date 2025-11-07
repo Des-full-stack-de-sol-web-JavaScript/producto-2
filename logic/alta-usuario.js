@@ -1,3 +1,5 @@
+import * as almacenaje from './almacenaje';
+
 function altaUsuariosPage() {
     console.log("AltaUsuarios Page Loaded");
 }
