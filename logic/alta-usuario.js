@@ -1,7 +1,5 @@
-import * as almacenaje from './almacenaje';
-
 function altaUsuariosPage() {
-    console.log("AltaUsuarios Page Loaded");
+  console.log("AltaUsuarios Page Loaded");
 }
 
 // ../logic/alta-usuario.js
@@ -17,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordStrengthText = document.getElementById("password-strength-text");
 
 
-// --- Función para evaluar fuerza de contraseña ---
+  // --- Función para evaluar fuerza de contraseña ---
   const evaluarContrasena = (password) => {
     let fuerza = 0;
     if (password.length >= 8) fuerza += 1;
@@ -51,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarBarraContrasena(e.target.value);
   });
 
-// --- Validación personalizada de contraseñas ---
-const validarCoincidenciaContrasenas = () => {
+  // --- Validación personalizada de contraseñas ---
+  const validarCoincidenciaContrasenas = () => {
     if (passwordInput.value !== confirmPasswordInput.value) {
       confirmPasswordInput.setCustomValidity("Las contraseñas no coinciden");
     } else {
@@ -63,7 +61,7 @@ const validarCoincidenciaContrasenas = () => {
   confirmPasswordInput.addEventListener("input", validarCoincidenciaContrasenas);
   passwordInput.addEventListener("input", validarCoincidenciaContrasenas);
 
-// --- Botón volver ---
+  // --- Botón volver ---
   btnVolver.addEventListener("click", () => {
     window.history.back();
   });
@@ -78,7 +76,7 @@ const validarCoincidenciaContrasenas = () => {
     }
   });
 
- // --- Validación y envío del formulario ---
+  // --- Validación y envío del formulario ---
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     event.stopPropagation();
