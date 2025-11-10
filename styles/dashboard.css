@@ -72,4 +72,26 @@
       }
     }
   }
+  .drop-zone {
+  min-height: 400px; 
+  background-color: #f8f9fa;
+  border: 2px dashed #ced4da;
+  border-radius: 8px; 
+  transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .drop-zone.drag-over {
+  background-color: #e9ecef;
+  border-color: #0d6efd; /
+  }
+
+
+  .dragging {
+  opacity: 0.5;
+  border: 2px dashed #0d6efd;
+  }
+
+  #dashboard-box > [class*="col-"] {
+  width: 100%;
+  }
 }

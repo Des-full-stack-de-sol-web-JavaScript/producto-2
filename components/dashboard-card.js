@@ -1,7 +1,7 @@
 export function dashboardCard({ title, date, description, author, category, color, email }) {
   const cardColumn = document.createElement('div');
   
-  cardColumn.className = 'col-lg-4 col-md-6 col-sm-12';
+  cardColumn.className = 'col-lg-6 col-md-4 col-sm-12';
 
   cardColumn.innerHTML = `
     <div class="card" style="--accent-color: ${color || '#007bff'}">

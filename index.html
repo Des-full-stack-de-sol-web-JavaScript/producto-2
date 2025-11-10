@@ -30,7 +30,7 @@
       <section class="container">
         <div class="text-center mb-4">
           <h1 class="mb-3">Dashboard</h1>
-          <h2 class="mb-3">Voluntariado para cuidar de personas mayores</h2>
+          <h2 class="mb-3">Voluntariado disponibles</h2>
 
           <div class="buttons-container">
             <button type="submit" class="btn btn-primary altaBtn">Todas</button>
@@ -40,10 +40,25 @@
             </button>
           </div>
         </div>
-
-        <div class="row g-3 justify-content-center" id="dashboard">
-          <!-- Content loaded dinamically using JS -->
+        
+        <div class="row">
+          <div class="col-md-8">
+            <h3>Publicaciones</h3>
+            <div class="row g-3 justify-content-center" id="dashboard">
+              <!-- Content loaded dinamically using JS -->
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h3 class="mb-3">Mis seleccionados</h3>
+            <div class="row g-3 p-3 drop-zone mt-3 flex-grow-1" id="dashboard-box">
+              <p id="drop-zone-placeholder" class="text-muted">
+                Arrastra tus voluntariados favoritos aquí
+              </p>
+              <!-- Content loaded dinamically using JS -->
+            </div>
+          </div>
         </div>
+          
       </section>
     </main>
 
@@ -52,7 +67,7 @@
     </footer>
 
     <script type="module" src="./logic/main.js"></script>
-    <script type="module" src="./logic/dashboard.js"></script>
+    <script type="module" src="./logic/int_1_dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
