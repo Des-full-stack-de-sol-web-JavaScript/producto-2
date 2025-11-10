@@ -22,13 +22,13 @@ async function iniciarPaginaPrincipal() {
     console.log("Contenedores HTML encontrados");
 
     try {
-        // --- ¿Funciona la Base de Datos? ---
+        //¿Funciona la Base de Datos?
         await initDB();
         console.log("Base de datos conectada");
 
         const todosLosVoluntariados = await obtenerVoluntariados();
         
-        // --- ¿Hay datos? ---
+        //¿Hay datos?
         console.log(`4. Obtenidos ${todosLosVoluntariados.length} voluntariados.`);
         
         if (todosLosVoluntariados.length === 0) {
@@ -36,7 +36,7 @@ async function iniciarPaginaPrincipal() {
             contDisponibles.innerHTML = "<p>No hay voluntariados en la base de datos, puedes crear una en la pestaña de voluntariados.</p>";
         }
 
-        // --- Distinguimos si esta logueado o no y se muestran los dashboards y botones ---
+        //Distinguimos si esta logueado o no y se muestran los dashboards y botones
         const activeUser = getActiveUser();
         let claveGuardado;
         let datosParaMostrar;
@@ -55,8 +55,6 @@ async function iniciarPaginaPrincipal() {
         
         const idsGuardados = JSON.parse(localStorage.getItem(claveGuardado)) || [];
         console.log(`6. Clave de guardado: ${claveGuardado}. IDs encontrados: ${idsGuardados.length}`);
-
-        // --- LLAMADA FINAL ---
         console.log("Llamando a renderizarTodo()");
         renderizarTodo(datosParaMostrar, idsGuardados, claveGuardado, activeUser, todosLosVoluntariados);
         console.log("Esta conectado");
