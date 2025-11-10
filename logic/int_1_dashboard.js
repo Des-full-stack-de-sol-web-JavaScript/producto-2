@@ -103,9 +103,8 @@ function renderizarTodo(datosParaMostrar, idsGuardados, claveGuardado, activeUse
     }
 }
 
-/**
- * Activa las columnas para que sean Zonas de "Drop".
- */
+// Activa las columnas para que sean Zonas de "Drop".
+
 function activarZonasDrop(claveGuardado) {
     const zonas = [contDisponibles, contSeleccionados];
 
@@ -140,9 +139,8 @@ function handleDragLeave(event) {
     event.currentTarget.classList.remove('drag-over'); 
 }
 
-/**
- * Activamos el evento de soltar en una zona
- */
+// Activamos el evento de soltar en una zona
+
 function activarDropEnZona(zona, claveGuardado) {
     
     const manejadorDrop = (event) => {
@@ -157,9 +155,8 @@ function activarDropEnZona(zona, claveGuardado) {
     zona.addEventListener('drop', manejadorDrop);
 }
 
-/**
- * accion de soltar en seleccionados
- */
+// accion de soltar en seleccionados
+
 function handleDrop(event, claveDeGuardado) {
     event.preventDefault(); 
     event.currentTarget.classList.remove('drag-over'); 
@@ -175,9 +172,8 @@ function handleDrop(event, claveDeGuardado) {
     }
 }
 
-/**
- * Guarda en localstorage la posicion de las dashboard
- */
+// Guarda en localstorage la posicion de las dashboard
+
 function guardarSeleccionActual(claveDeGuardado) {
     const tarjetasEnLaCaja = contSeleccionados.querySelectorAll('[data-item-id]');
     const arrayDeIdsNumericos = Array.from(tarjetasEnLaCaja).map(tarjeta => {
@@ -187,9 +183,8 @@ function guardarSeleccionActual(claveDeGuardado) {
     console.log('Selección guardada:', arrayDeIdsNumericos);
 }
 
-/**
- * Botones de filtro que solo se activan si estas logueado
- */
+// Botones de filtro que solo se activan si estas logueado
+
 function conectarFiltros(activeUser, todosLosVoluntariados, idsGuardados, claveGuardado) {
     
     botonesFiltro.forEach(button => {
