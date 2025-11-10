@@ -8,7 +8,7 @@ const botonesFiltro = document.querySelectorAll('.buttons-container .btn');
 const contBotones = document.querySelector('.buttons-container');
 
 /**
- * Función para tener toda la logica de los dashboard
+ * Función para tener toda la logica de los dashboard y realizar los drag and drop por usuario publico y siendo privado poder filtrar también
  */
 async function iniciarPaginaPrincipal() {
     
@@ -162,9 +162,9 @@ function handleDrop(event, claveDeGuardado) {
     const tarjetaArrastrada = document.querySelector(`[data-item-id="${itemId}"]`);
 
     if (tarjetaArrastrada) {
-        // 1. Movemos el elemento HTML a la nueva zona
+        //Movemos el elemento HTML a la nueva zona
         event.currentTarget.appendChild(tarjetaArrastrada);
-        // 2. ¡LLAMAMOS A GUARDAR! (Paso 5)
+        //Guardamos la seleccion
         guardarSeleccionActual(claveDeGuardado);
     }
 }
