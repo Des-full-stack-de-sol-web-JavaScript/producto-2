@@ -75,7 +75,7 @@ function renderizarTodo(datosParaMostrar, idsGuardados, claveGuardado, activeUse
 
         const tarjetaElement = dashboardCard(item); 
 
-        // --- Activamos que sea seleccionable y que se pueda soltar---
+        //Activamos que sea seleccionable y que se pueda soltar
         tarjetaElement.draggable = true;
         tarjetaElement.dataset.itemId = item.id; 
 
@@ -88,7 +88,7 @@ function renderizarTodo(datosParaMostrar, idsGuardados, claveGuardado, activeUse
             event.target.classList.remove('dragging'); 
         });
         
-        // --- Renderizamos ---
+        //Renderizamos
         if (idsGuardados.includes(item.id)) {
             contSeleccionados.appendChild(tarjetaElement);
         } else {
@@ -120,8 +120,7 @@ function activarZonasDrop(claveGuardado) {
 
         zona._manejadorDragOver = manejadorDragOver;
         zona._manejadorDragLeave = manejadorDragLeave;
-
-        // (Llamada al Paso 4)
+        //llamamos a la funcion
         activarDropEnZona(zona, claveGuardado);
     });
 }
