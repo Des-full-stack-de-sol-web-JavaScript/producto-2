@@ -1,3 +1,5 @@
+import { userList } from '../assets/db/data.js';
+
 function showError(input, message) {
     input.classList.add('is-invalid');
     const feedback = input.parentElement.querySelector('.invalid-feedback');
@@ -5,7 +7,6 @@ function showError(input, message) {
         feedback.textContent = message;
     }
 }
-
 
 function clearFieldError(inputs) {
     inputs.forEach(input => {
@@ -32,14 +33,12 @@ function validateEmailField(email) {
     return "";
 }
 
-
 function validatePasswordField(password) {
     const value = password.value.trim();
     if (!value) return "Contraseña obligatoria.";
     if (value.length < 6) return "Mínimo 6 caracteres.";
     return "";
 }
-
 
 function loginPage() {
     console.log("Login Page Loaded");
@@ -48,13 +47,15 @@ function loginPage() {
     const emailInput = loginForm.querySelector('#email');
     const passwordInput = loginForm.querySelector('#password');
     const loginMessage = document.querySelector('#loginMessage');
-    
+
     loginForm.addEventListener('submit', function(event) {
         const inputs = [emailInput, passwordInput];
         const emailValue = emailInput.value.trim();
+        const passwordValue = passwordInput.value.trim();
         let valid = true;
 
         event.preventDefault();
+        loginMessage.innerHTML = ''; 
 
         clearFieldError(inputs);
         const emailError = validateEmailField(emailInput);
@@ -64,19 +65,33 @@ function loginPage() {
         if (passwordError) { showError(passwordInput, passwordError); valid = false; }
         if (!valid) return;
 
-        localStorage.setItem('email', emailValue);
+        // Validar contra userList
+        const foundUser = userList.find(user => 
+            user.email === emailValue && user.password === passwordValue
+        );
 
-        const userEmailSpan = document.querySelector('.navbar-text.text-muted');
-        if (userEmailSpan) userEmailSpan.textContent = emailValue;
+        if (foundUser) {
+            // Éxito
+            const userEmailSpan = document.querySelector('.navbar-text.text-muted');
+            if (userEmailSpan) userEmailSpan.textContent = emailValue;
 
-        loginMessage.innerHTML = `<div class="alert alert-success mt-3">Bienvenido ${emailValue}</div>`;
+            localStorage.setItem('loggedInUserEmail', emailValue); // Opcional
 
-        loginForm.reset();
-        setTimeout(() => { window.location.href = '../index.html';}, 2500);
+            loginMessage.innerHTML = `<div class="alert alert-success mt-3">Bienvenido ${emailValue}</div>`;
 
+            loginForm.reset();
+            emailInput.classList.remove('is-invalid');
+            passwordInput.classList.remove('is-invalid');
+
+            setTimeout(() => { 
+                window.location.href = '../index.html';
+            }, 2500);
+
+        } else {
+            // Fallo
+            loginMessage.innerHTML = `<div class="alert alert-danger mt-3">Correo o contraseña incorrectos.</div>`;
+        }
     });
 }
 
-
 loginPage();
-

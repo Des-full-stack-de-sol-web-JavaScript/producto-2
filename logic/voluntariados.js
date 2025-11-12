@@ -1,4 +1,4 @@
-import { dashboardData } from '../assets/data/dashboardData.js';
+import { postList } from '../assets/db/data.js';
 
 function voluntariadosPage() {
     console.log("Voluntariados Page Loaded");
@@ -7,22 +7,25 @@ function voluntariadosPage() {
     const formulario = document.getElementById("formulario");
 
     /*se copian los datos iniciales */
-    const datosTabla = [...dashboardData];
+    const datosTabla = [...postList];
 
-    /* Carga los datos iniciales procedentes del archivo dashboardData.js y crea el botón  de borrado*/
+    /* Carga los datos iniciales procedentes del archivo postList.js y crea el botón  de borrado*/
     function cargarDatosTabla() {
         tabla.innerHTML = "";
 
         datosTabla.forEach((voluntariado, index) => {
             const fila = document.createElement("tr");
 
-            fila.innerHTML =
-                `<td>${voluntariado.title}</td>
-                    <td>${voluntariado.author}</td>
-                    <td>${voluntariado.date}</td>
-                    <td>${voluntariado.description}</td>
-                    <td>${voluntariado.category}</td>
-                    <td> <button type="submit" class="btn btn-danger borrarBtn" data-index="${index}">Borrar</button></td>`;
+            fila.innerHTML =`
+                <td>${voluntariado.title}</td>
+                <td>${voluntariado.author}</td>
+                <td>${voluntariado.date}</td>
+                <td>${voluntariado.description}</td>
+                <td>${voluntariado.category}</td>
+                <td> 
+                    <button type="submit" class="btn btn-danger borrarBtn" data-index="${index}">Borrar</button>
+                </td>
+                `;
 
             tabla.appendChild(fila);
         });
@@ -80,4 +83,5 @@ function voluntariadosPage() {
 
     init();
 }
+
 voluntariadosPage()

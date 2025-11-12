@@ -1,5 +1,5 @@
 function altaUsuariosPage() {
-    console.log("AltaUsuarios Page Loaded");
+  console.log("AltaUsuarios Page Loaded");
 }
 
 // ../logic/alta-usuario.js
@@ -12,10 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordInput = document.getElementById("contrasena");
   const confirmPasswordInput = document.getElementById("confirmar-contrasena");
   const passwordStrengthBar = document.getElementById("password-strength-bar");
-  const passwordStrengthText = document.getElementById("password-strength-text");
+  const passwordStrengthText = document.getElementById(
+    "password-strength-text"
+  );
 
-
-// --- Función para evaluar fuerza de contraseña ---
+  // --- Función para evaluar fuerza de contraseña ---
   const evaluarContrasena = (password) => {
     let fuerza = 0;
     if (password.length >= 8) fuerza += 1;
@@ -49,8 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarBarraContrasena(e.target.value);
   });
 
-// --- Validación personalizada de contraseñas ---
-const validarCoincidenciaContrasenas = () => {
+  // --- Validación personalizada de contraseñas ---
+  const validarCoincidenciaContrasenas = () => {
     if (passwordInput.value !== confirmPasswordInput.value) {
       confirmPasswordInput.setCustomValidity("Las contraseñas no coinciden");
     } else {
@@ -58,17 +59,22 @@ const validarCoincidenciaContrasenas = () => {
     }
   };
 
-  confirmPasswordInput.addEventListener("input", validarCoincidenciaContrasenas);
+  confirmPasswordInput.addEventListener(
+    "input",
+    validarCoincidenciaContrasenas
+  );
   passwordInput.addEventListener("input", validarCoincidenciaContrasenas);
 
-// --- Botón volver ---
+  // --- Botón volver ---
   btnVolver.addEventListener("click", () => {
     window.history.back();
   });
 
   // --- Botón cancelar ---
   btnCancelar.addEventListener("click", () => {
-    const confirmar = confirm("¿Desea cancelar el registro y limpiar el formulario?");
+    const confirmar = confirm(
+      "¿Desea cancelar el registro y limpiar el formulario?"
+    );
     if (confirmar) {
       form.reset();
       passwordStrengthBar.style.width = "0%";
@@ -76,7 +82,7 @@ const validarCoincidenciaContrasenas = () => {
     }
   });
 
- // --- Validación y envío del formulario ---
+  // --- Validación y envío del formulario ---
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -98,13 +104,15 @@ const validarCoincidenciaContrasenas = () => {
     };
 
     // Mostrar confirmación
-    alert(`✅ Usuario registrado correctamente:\n
-Nombre: ${nuevoUsuario.nombre} ${nuevoUsuario.apellidos}
-Usuario: ${nuevoUsuario.usuario}
-Email: ${nuevoUsuario.email}
-Rol: ${nuevoUsuario.rol}
-Departamento: ${nuevoUsuario.departamento || "N/A"}
-Estado: ${nuevoUsuario.estado}`);
+    alert(`
+      ✅ Usuario registrado correctamente:\n
+      Nombre: ${nuevoUsuario.nombre} ${nuevoUsuario.apellidos}
+      Usuario: ${nuevoUsuario.usuario}
+      Email: ${nuevoUsuario.email}
+      Rol: ${nuevoUsuario.rol}
+      Departamento: ${nuevoUsuario.departamento || "N/A"}
+      Estado: ${nuevoUsuario.estado}
+    `);
 
     // Limpiar el formulario
     form.reset();
@@ -114,5 +122,4 @@ Estado: ${nuevoUsuario.estado}`);
   });
 });
 
-
-altaUsuariosPage()
+altaUsuariosPage();

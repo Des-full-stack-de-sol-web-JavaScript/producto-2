@@ -3,24 +3,6 @@ export function headerComponent() {
   const BASE_PATH = isGithubPages ? "/producto-1/" : "/";
 
   const header = document.querySelector("#header");
-  const currentUser = window.localStorage.getItem('email');
-  console.log("currentUser", currentUser);
-
-  let userAreaHtml = '';
-  if (currentUser) {
-    userAreaHtml = `
-        <span class="navbar-text text-white me-2">
-          ${currentUser} 
-        </span>
-        <button class="btn btn-outline-light btn-sm ms-2" id="logoutButton">Logout</button>
-      `;
-  } else {
-    userAreaHtml = `
-        <span class="navbar-text text-muted">
-          -no login-
-        </span>
-      `;
-  }
 
   header.innerHTML = ` 
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -48,24 +30,15 @@ export function headerComponent() {
                   </ul>
                   
                 <div class="d-flex align-items-center justify-content-between">
-                    ${userAreaHtml}
+                   <span class="navbar-text text-white me-2">
+                      -- No Loggined In --
+                    </span>
                 </div>
 
               </div>
           </div>
       </nav>
     `;
-
-
-  if (currentUser) {
-    const logoutButton = header.querySelector("#logoutButton");
-    if (logoutButton) {
-      logoutButton.addEventListener('click', () => {
-        window.localStorage.removeItem('email');
-        window.location.href = `${BASE_PATH}index.html`; 
-      });
-    }
-  }
 
   return header;
 }
