@@ -5,7 +5,7 @@ export function headerComponent() {
   if (!headerContainer) return;
 
   const isGithub = window.location.hostname.includes("github.io");
-  const BASE_PATH = isGithub ? "/producto-1/" : "/";
+  const BASE_PATH = isGithub ? "/producto-2/" : "/";
 
   const currentCuser = almacenaje.obtenerUsuarioActivo();
   const userClass = currentCuser ? "text-white fw-bold" : "text-muted";
