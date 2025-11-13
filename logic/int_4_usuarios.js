@@ -1,4 +1,4 @@
-import { almacenaje } from './almacenaje.js';
+import { almacenaje } from "./almacenaje.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Gestión de Usuarios cargada");
@@ -6,20 +6,45 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Elementos del DOM ---
   const form = document.getElementById("form-alta-usuario");
   const tablaBody = document.getElementById("cuerpo-tabla-usuarios");
-  
-  // Inputs del formulario (Asegúrate que tu HTML solo tenga estos)
+  const mensajeContainer = document.getElementById("mensaje-sistema");
+
   const nombreInput = document.getElementById("nombre");
   const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password"); // Ojo al ID en tu HTML
-  const confirmInput = document.getElementById("confirmar-password"); // Ojo al ID en tu HTML
+  const passwordInput = document.getElementById("password");
+  const confirmInput = document.getElementById("confirmar-password");
+
+  // --- FUNCIÓN PARA MOSTRAR NOTIFICACIÓN (Sustituye a alert) ---
+  const mostrarNotificacion = (mensaje, tipo = "success") => {
+    // Tipos: 'success' (verde), 'danger' (rojo), 'warning' (amarillo)
+    mensajeContainer.innerHTML = `
+        <div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+            ${
+              tipo === "success"
+                ? '<i class="bi bi-check-circle-fill me-2"></i>'
+                : '<i class="bi bi-exclamation-triangle-fill me-2"></i>'
+            }
+            ${mensaje}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      `;
+
+    // Auto-ocultar después de 4 segundos
+    setTimeout(() => {
+      const alerta = mensajeContainer.querySelector(".alert");
+      if (alerta) {
+        alerta.classList.remove("show");
+        setTimeout(() => (mensajeContainer.innerHTML = ""), 150);
+      }
+    }, 4000);
+  };
 
   // --- 1. RENDERIZADO DE LA TABLA ---
   const renderizarTabla = () => {
-    tablaBody.innerHTML = ""; // Limpiar tabla
+    tablaBody.innerHTML = "";
     const usuarios = almacenaje.obtenerUsuarios();
 
     if (usuarios.length === 0) {
-      tablaBody.innerHTML = `<tr><td colspan="4" class="text-center">No hay usuarios registrados.</td></tr>`;
+      tablaBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No hay usuarios registrados.</td></tr>`;
       return;
     }
 
@@ -28,9 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
       tr.innerHTML = `
         <td>${user.nombre}</td>
         <td>${user.email}</td>
-        <td>********</td> <td>
-          <button class="btn btn-danger btn-sm btn-eliminar" data-email="${user.email}" title="Eliminar">
-            Borrar
+        <td>********</td> 
+        <td class="text-end">
+          <button class="btn btn-outline-danger btn-sm btn-eliminar" data-email="${user.email}" title="Eliminar">
+            <i class="bi bi-trash"></i> Borrar
           </button>
         </td>
       `;
@@ -38,26 +64,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // --- 2. GESTIÓN DE BORRADO (Delegación de eventos) ---
+  // --- 2. GESTIÓN DE BORRADO ---
   tablaBody.addEventListener("click", (e) => {
     const btn = e.target.closest(".btn-eliminar");
     if (!btn) return;
 
     const email = btn.dataset.email;
-    
-    // Evitar borrarte a ti mismo si estás logueado (Opcional pero recomendado)
-    const usuarioActivo = almacenaje.getActiveUser();
+    const usuarioActivo = almacenaje.obtenerUsuarioActivo();
+
     if (usuarioActivo && usuarioActivo.email === email) {
-        alert("No puedes borrar tu propio usuario mientras estás conectado.");
-        return;
+      mostrarNotificacion(
+        "No puedes borrar tu propio usuario mientras estás conectado.",
+        "danger"
+      );
+      return;
     }
 
     if (confirm(`¿Seguro que quieres eliminar al usuario ${email}?`)) {
       const borrado = almacenaje.borrarUsuario(email);
       if (borrado) {
         renderizarTabla();
+        mostrarNotificacion("Usuario eliminado correctamente.", "warning");
       } else {
-        alert("Error al borrar el usuario.");
+        // CORREGIDO: Antes usabas alert() aquí
+        mostrarNotificacion("Error al borrar el usuario.", "danger");
       }
     }
   });
@@ -81,38 +111,42 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     event.stopPropagation();
 
-    validarPasswords(); // Comprobación final
+    validarPasswords();
 
     if (!form.checkValidity()) {
       form.classList.add("was-validated");
       return;
     }
 
-    // Crear objeto usuario (Estructura simple)
     const nuevoUsuario = {
-      rol: "usuario", // Por defecto
+      rol: "usuario",
       nombre: nombreInput.value.trim(),
       email: emailInput.value.trim(),
-      password: passwordInput.value.trim()
+      password: passwordInput.value.trim(),
     };
 
-    // Usamos el módulo almacenaje para registrar
     const resultado = almacenaje.registrarUsuario(nuevoUsuario);
 
     if (resultado) {
-      // Éxito
-      alert(`Usuario ${nuevoUsuario.nombre} creado correctamente.`);
+      mostrarNotificacion(
+        `¡Bienvenido/a, <strong>${nuevoUsuario.nombre}</strong>! Usuario creado con éxito.`,
+        "success"
+      );
+
       form.reset();
       form.classList.remove("was-validated");
-      renderizarTabla(); // Actualizamos la lista visual
+      renderizarTabla();
     } else {
-      // Error (probablemente email duplicado)
-      alert("Error: El correo electrónico ya está registrado.");
+      // CORREGIDO: Antes usabas alert() aquí
+      mostrarNotificacion(
+        "Error: El correo electrónico ya está registrado.",
+        "danger"
+      );
+
       emailInput.classList.add("is-invalid");
       emailInput.focus();
     }
   });
 
-  // --- Carga Inicial ---
   renderizarTabla();
 });

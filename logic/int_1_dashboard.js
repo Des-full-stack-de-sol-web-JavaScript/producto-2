@@ -1,65 +1,50 @@
 import { almacenaje } from "./almacenaje.js";
 import { dashboardCard } from "../components/dashboard-card.js";
+import { dashboardData } from "../assets/data/dashboardData.js";
 
-// --- ELEMENTOS DEL DOM ---
 const contDisponibles = document.getElementById("dashboard");
 const contSeleccionados = document.getElementById("dashboard-box");
 const botonesFiltro = document.querySelectorAll(".buttons-container .btn");
 const contBotones = document.querySelector(".buttons-container");
 
-/**
- * Función Principal
- */
 async function iniciarPaginaPrincipal() {
-  console.log("Iniciando pagina");
-
-  if (!contDisponibles || !contSeleccionados) {
-    console.error("No se han encontrado los contenedores");
-    return;
-  }
-  console.log("Contenedores HTML encontrados");
+  if (!contDisponibles || !contSeleccionados) return;
 
   try {
-    // Inicializamos la DB
     await almacenaje.initDB();
-    // Inicializamos usuarios por si es la primera vez
-    
-    console.log("Base de datos conectada");
 
-    const todosLosVoluntariados = await almacenaje.obtenerVoluntariados();
-    console.log(`4. Obtenidos ${todosLosVoluntariados.length} voluntariados.`);
+    let todosLosVoluntariados = await almacenaje.obtenerVoluntariados();
 
     if (todosLosVoluntariados.length === 0) {
-      console.warn("Base de datos vacia");
-      contDisponibles.innerHTML =
-        "<p>No hay voluntariados en la base de datos, puedes crear uno en la pestaña de voluntariados.</p>";
+      for (const v of dashboardData) {
+        await almacenaje.insertarVoluntariado(v);
+      }
+      todosLosVoluntariados = await almacenaje.obtenerVoluntariados();
     }
 
-    // --- CORRECCIÓN DEL ERROR AQUÍ ---
-    // Usamos 'activeUser' en todo momento para evitar ReferenceError
-    const activeUser = almacenaje.obtenerUsuarioActivo();
+    if (todosLosVoluntariados.length === 0) {
+      contDisponibles.innerHTML = `<div class="col-12 text-center text-muted py-5">
+            <i class="bi bi-inbox display-1"></i>
+            <p class="mt-3">No hay voluntariados disponibles.</p>
+         </div>`;
+    }
 
+    const activeUser = almacenaje.obtenerUsuarioActivo();
     let claveGuardado;
     let datosParaMostrar;
 
     if (activeUser) {
-      console.log(`5. MODO PRIVADO para ${activeUser.email}`);
       claveGuardado = `seleccion_${activeUser.email}`;
       datosParaMostrar = todosLosVoluntariados;
       if (contBotones) contBotones.style.display = "block";
     } else {
-      console.log("Es un modo publico");
       claveGuardado = "seleccionIndex";
       datosParaMostrar = todosLosVoluntariados;
       if (contBotones) contBotones.style.display = "none";
     }
 
     const idsGuardados = JSON.parse(localStorage.getItem(claveGuardado)) || [];
-    console.log(
-      `6. Clave de guardado: ${claveGuardado}. IDs encontrados: ${idsGuardados.length}`
-    );
 
-    // Ahora pasamos 'activeUser' que ya está definido correctamente arriba
     renderizarTodo(
       datosParaMostrar,
       idsGuardados,
@@ -67,15 +52,12 @@ async function iniciarPaginaPrincipal() {
       activeUser,
       todosLosVoluntariados
     );
-
-    console.log("Dashboard cargado correctamente");
   } catch (error) {
-    console.error("Hay un error al cargar la pagina principal", error);
-    contDisponibles.innerHTML = `<p class="text-danger">Error al cargar la base de datos: ${error.message}</p>`;
+    console.error(error);
+    contDisponibles.innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
   }
 }
 
-// Renderizado de tarjetas
 function renderizarTodo(
   datosParaMostrar,
   idsGuardados,
@@ -88,8 +70,6 @@ function renderizarTodo(
 
   datosParaMostrar.forEach((item) => {
     const tarjetaElement = dashboardCard(item);
-
-    // Activamos Drag & Drop
     tarjetaElement.draggable = true;
     tarjetaElement.dataset.itemId = item.id;
 
@@ -102,7 +82,6 @@ function renderizarTodo(
       event.target.classList.remove("dragging");
     });
 
-    // Renderizamos en la columna correcta
     if (idsGuardados.includes(item.id)) {
       contSeleccionados.appendChild(tarjetaElement);
     } else {
@@ -122,7 +101,6 @@ function renderizarTodo(
   }
 }
 
-// Activa las columnas para que sean Zonas de "Drop".
 function activarZonasDrop(claveGuardado) {
   const zonas = [contDisponibles, contSeleccionados];
 
@@ -155,13 +133,12 @@ function handleDragLeave(event) {
 }
 
 function activarDropEnZona(zona, claveGuardado) {
-  const manejadorDrop = (event) => {
-    handleDrop(event, claveGuardado);
-  };
+  const manejadorDrop = (event) => handleDrop(event, claveGuardado);
 
-  if (zona._manejadorDrop) {
+  if (zona._manejadorDrop){
     zona.removeEventListener("drop", zona._manejadorDrop);
   }
+
   zona._manejadorDrop = manejadorDrop;
   zona.addEventListener("drop", manejadorDrop);
 }
@@ -183,11 +160,10 @@ function handleDrop(event, claveDeGuardado) {
 
 function guardarSeleccionActual(claveDeGuardado) {
   const tarjetasEnLaCaja = contSeleccionados.querySelectorAll("[data-item-id]");
-  const arrayDeIdsNumericos = Array.from(tarjetasEnLaCaja).map((tarjeta) => {
-    return Number(tarjeta.dataset.itemId);
-  });
+  const arrayDeIdsNumericos = Array.from(tarjetasEnLaCaja).map((tarjeta) =>
+    Number(tarjeta.dataset.itemId)
+  );
   localStorage.setItem(claveDeGuardado, JSON.stringify(arrayDeIdsNumericos));
-  console.log("Selección guardada:", arrayDeIdsNumericos);
 }
 
 function conectarFiltros(
@@ -199,6 +175,15 @@ function conectarFiltros(
   botonesFiltro.forEach((button) => {
     const manejadorFiltro = (event) => {
       event.preventDefault();
+
+      botonesFiltro.forEach((btn) => {
+        btn.classList.remove("active", "btn-primary");
+        btn.classList.add("btn-outline-primary");
+      });
+
+      button.classList.remove("btn-outline-primary");
+      button.classList.add("active", "btn-primary");
+
       const filterType = button.textContent.trim();
       let datosFiltrados;
 
@@ -218,6 +203,7 @@ function conectarFiltros(
           datosFiltrados = todosLosVoluntariados;
           break;
       }
+
       renderizarTodo(
         datosFiltrados,
         idsGuardados,
@@ -227,12 +213,13 @@ function conectarFiltros(
       );
     };
 
-    if (button._manejadorFiltro) {
+    if (button._manejadorFiltro){
       button.removeEventListener("click", button._manejadorFiltro);
     }
+
     button._manejadorFiltro = manejadorFiltro;
     button.addEventListener("click", manejadorFiltro);
   });
 }
 
-iniciarPaginaPrincipal();
+document.addEventListener("DOMContentLoaded", iniciarPaginaPrincipal);

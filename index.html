@@ -26,40 +26,66 @@
       <!-- Content loaded dinamically using JS -->
     </header>
 
-    <main>
-      <section class="container">
-        <div class="text-center mb-4">
-          <h1 class="mb-3">Dashboard</h1>
-          <h2 class="mb-3">Voluntariado disponibles</h2>
+    <main class="container my-5">
+      <div class="text-center mb-5">
+        <h1 class="h1 text-primary fw-bold">
+          Dashboard
+        </h1>
+        <p class="lead text-muted">
+          Explora las oportunidades de voluntariado disponibles
+        </p>
 
-          <div class="buttons-container">
-            <button type="submit" class="btn btn-primary altaBtn">Todas</button>
-            <button type="submit" class="btn btn-primary altaBtn">Otras</button>
-            <button type="submit" class="btn btn-primary altaBtn">
+        <div class="buttons-container mt-4">
+          <div class="btn-group shadow-sm" role="group">
+            <button type="button" class="btn btn-outline-primary active">
+              Todas
+            </button>
+            <button type="button" class="btn btn-outline-primary">Otras</button>
+            <button type="button" class="btn btn-outline-primary">
               Propias
             </button>
           </div>
         </div>
-        
-        <div class="row">
-          <div class="col-md-8">
-            <h3>Publicaciones</h3>
-            <div class="row g-3 justify-content-center" id="dashboard">
-              <!-- Content loaded dinamically using JS -->
-            </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="d-flex align-items-center mb-3">
+            <h2 class="h4 mb-0 text-secondary">
+              <i class="bi bi-collection me-2"></i>Publicaciones
+            </h2>
+            <span class="badge bg-secondary ms-2 rounded-pill"
+              >Disponibles</span
+            >
           </div>
-          <div class="col-md-4">
-            <h3 class="mb-3">Mis seleccionados</h3>
-            <div class="row g-3 p-3 drop-zone mt-3 flex-grow-1" id="dashboard-box">
-              <p id="drop-zone-placeholder" class="text-muted">
-                Arrastra tus voluntariados favoritos aquí
-              </p>
-              <!-- Content loaded dinamically using JS -->
+
+          <div class="row g-3" id="dashboard"></div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="sticky-top" style="top: 20px; z-index: 1">
+            <div class="d-flex align-items-center mb-3">
+              <h2 class="h4 mb-0 text-primary">
+                <i class="bi bi-bookmark-heart-fill me-2"></i>Mis Favoritos
+              </h2>
+            </div>
+
+            <div
+              id="dashboard-box"
+              class="drop-zone p-3 d-flex flex-column gap-3"
+            >
+              <div class="text-center text-muted py-5 pointer-events-none">
+                <i
+                  class="bi bi-arrow-down-square display-4 mb-2 opacity-25"
+                ></i>
+                <p class="mb-0">
+                  Arrastra aquí los voluntariados que te interesen
+                </p>
+              </div>
             </div>
           </div>
         </div>
-          
-      </section>
+      </div>
     </main>
 
     <footer id="footer">

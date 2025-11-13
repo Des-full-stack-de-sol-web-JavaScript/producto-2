@@ -1,20 +1,19 @@
 #voluntarios-page {
-
-}
-
-.form-group{
+  .form-group {
     padding-bottom: 10px;
-}
+  }
 
-h1{
+  h1 {
     text-align: center;
     padding-bottom: 15px;
-}
+  }
 
-h1, h2{
+  h1,
+  h2 {
     font-weight: bold;
-}
+  }
 
-table{
+  table {
     text-align: center;
+  }
 }
