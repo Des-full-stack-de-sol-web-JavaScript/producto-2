@@ -12,12 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordInput = document.getElementById("contrasena");
   const confirmPasswordInput = document.getElementById("confirmar-contrasena");
   const passwordStrengthBar = document.getElementById("password-strength-bar");
-  const passwordStrengthText = document.getElementById("password-strength-text");
+  const passwordStrengthText = document.getElementById(
+    "password-strength-text"
+  );
   const tablaBody = document.getElementById("cuerpo-tabla-usuarios");
 
   // --- Base de datos local (localStorage) ---
   const USUARIOS_KEY = "usuariosAppDB";
-  const getUsuarios = () => JSON.parse(localStorage.getItem(USUARIOS_KEY)) || [];
+  const getUsuarios = () =>
+    JSON.parse(localStorage.getItem(USUARIOS_KEY)) || [];
   const saveUsuarios = (usuarios) =>
     localStorage.setItem(USUARIOS_KEY, JSON.stringify(usuarios));
 
@@ -58,7 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email = btnEliminar.dataset.email;
     if (
-      !confirm(`¿Está seguro de que desea eliminar al usuario con email: ${email}?`)
+      !confirm(
+        `¿Está seguro de que desea eliminar al usuario con email: ${email}?`
+      )
     ) {
       return;
     }
@@ -121,7 +126,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  confirmPasswordInput.addEventListener("input", validarCoincidenciaContrasenas);
+  confirmPasswordInput.addEventListener(
+    "input",
+    validarCoincidenciaContrasenas
+  );
   passwordInput.addEventListener("input", validarCoincidenciaContrasenas);
 
   // --- Botón volver ---
@@ -210,9 +218,9 @@ document.addEventListener("DOMContentLoaded", () => {
     saveUsuarios(usuarios);
 
     // Mostrar confirmación (sin datos sensibles como la contraseña)
-    alert(`✅ Usuario registrado correctamente:\n
-Nombre: ${nuevoUsuario.nombre} ${nuevoUsuario.apellidos}
-Usuario: ${nuevoUsuario.usuario}
+    console.log(`✅ Usuario registrado correctamente:
+      Nombre: ${nuevoUsuario.nombre} ${nuevoUsuario.apellidos}
+      Usuario: ${nuevoUsuario.usuario}
 Email: ${nuevoUsuario.email}
 Rol: ${nuevoUsuario.rol}
 Departamento: ${nuevoUsuario.departamento || "N/A"}

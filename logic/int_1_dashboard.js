@@ -1,5 +1,5 @@
 import { dashboardCard } from '../components/dashboard-card.js';
-import { initDB, obtenerVoluntariados, getActiveUser } from './almacenaje.js';
+import { almacenaje } from './almacenaje.js';
 
 // --- ELEMENTOS DEL DOM ---
 const contDisponibles = document.getElementById('dashboard');
@@ -23,10 +23,10 @@ async function iniciarPaginaPrincipal() {
 
     try {
         //¿Funciona la Base de Datos?
-        await initDB();
+        await almacenaje.initDB();
         console.log("Base de datos conectada");
 
-        const todosLosVoluntariados = await obtenerVoluntariados();
+        const todosLosVoluntariados = await almacenaje.obtenerVoluntariados();
         
         //¿Hay datos?
         console.log(`4. Obtenidos ${todosLosVoluntariados.length} voluntariados.`);
@@ -37,13 +37,13 @@ async function iniciarPaginaPrincipal() {
         }
 
         //Distinguimos si esta logueado o no y se muestran los dashboards y botones
-        const activeUser = getActiveUser();
+        const currentCuser = almacenaje.getCurrentUser();
         let claveGuardado;
         let datosParaMostrar;
 
-        if (activeUser) {
-            console.log(`5. MODO PRIVADO para ${activeUser.email}`);
-            claveGuardado = `seleccion_${activeUser.email}`;
+        if (currentCuser) {
+            console.log(`5. MODO PRIVADO para ${currentCuser.email}`);
+            claveGuardado = `seleccion_${currentCuser.email}`;
             datosParaMostrar = todosLosVoluntariados;
             if (contBotones) contBotones.style.display = 'block';
         } else {

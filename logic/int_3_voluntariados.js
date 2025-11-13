@@ -1,6 +1,5 @@
 import { dashboardData } from '../assets/data/dashboardData.js';
-
-import { insertarVoluntariado, obtenerVoluntariados, borrarVoluntariado, initDB } from './almacenaje.js';
+import { almacenaje } from './almacenaje.js';
 
 function voluntariadosPage() {
     console.log("Voluntariados Page Loaded");
@@ -11,17 +10,17 @@ function voluntariadosPage() {
 
     /**Inicializar base de datos con datos de dashboradData.js si está vacía. */
     async function inicializarDatos() {
-        const voluntariados = await obtenerVoluntariados();
+        const voluntariados = await almacenaje.obtenerVoluntariados();
         if (voluntariados.length === 0) {
             for (const v of dashboardData) {
-                await insertarVoluntariado(v);
+                await almacenaje.insertarVoluntariado(v);
             }
         }
     }
 
     /* Carga los datos iniciales procedentes del archivo dashboardData.js y crea el botón  de borrado*/
     async function cargarDatosTabla() {
-        const datosTabla = await obtenerVoluntariados();
+        const datosTabla = await almacenaje.obtenerVoluntariados();
 
         tabla.innerHTML = "";
 
@@ -126,7 +125,7 @@ function voluntariadosPage() {
         tabla.addEventListener("click", async (event) => {
             if (event.target.classList.contains("borrarBtn")) {
                 const id = Number(event.target.dataset.id);
-                await borrarVoluntariado(id);
+                await almacenaje.borrarVoluntariado(id);
                 await cargarDatosTabla();
             }
         });
@@ -143,7 +142,7 @@ function voluntariadosPage() {
                 const formData = new FormData(formulario);
                 const nuevoVoluntariado = Object.fromEntries(formData.entries());
 
-                await insertarVoluntariado(nuevoVoluntariado);
+                await almacenaje.insertarVoluntariado(nuevoVoluntariado);
                 formulario.classList.remove("was-validated");
                 formulario.reset();
                 await cargarDatosTabla();
@@ -156,7 +155,7 @@ function voluntariadosPage() {
 
     /** Función para la inicialización principal */
     async function init() {
-        await initDB();
+        await almacenaje.initDB();
         initListeners();
         await inicializarDatos();
         await cargarDatosTabla();

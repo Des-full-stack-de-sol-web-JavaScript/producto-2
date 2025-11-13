@@ -1,4 +1,3 @@
-//import { getCurrentUser, logoutUser,  } from "../logic/almacenaje.js";
 import almacenaje from "../logic/almacenaje.js";
 
 

@@ -1,8 +1,7 @@
-import { loguearUsuario } from "./almacenaje.js";
-import { headerComponent, updateHeaderDisplay } from "../components/header.js";
+import { headerComponent } from "../components/header.js";
+import { almacenaje } from './almacenaje.js';
 
-import { initusers } from './almacenaje.js';
-initusers();
+almacenaje.initusers();
 
 
 headerComponent();
@@ -73,12 +72,11 @@ function loginPage() {
     if (passwordError) { showError(passwordInput, passwordError); valid = false; }
     if (!valid) return;
 
-    const loginOk = loguearUsuario(emailInput.value.trim(), passwordInput.value.trim());
+    const loginOk = almacenaje.loguearUsuario(emailInput.value.trim(), passwordInput.value.trim());
 
      if (loginOk) {
       loginMessage.innerHTML = `<div class="alert alert-success mt-3">Bienvenido!</div>`;
 
-      updateHeaderDisplay();
 
        // Redirigimos después de 2 segundos
       setTimeout(() => {
