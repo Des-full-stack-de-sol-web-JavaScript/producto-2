@@ -1,10 +1,9 @@
 import { headerComponent } from '../components/header.js';
 import { footerComponent } from '../components/footer.js';
+import { almacenaje } from './almacenaje.js'; 
 
-
-function main(){
+document.addEventListener('DOMContentLoaded', () => {
+    almacenaje.initusers();
     headerComponent();
     footerComponent();
-}
-
-main()
+});

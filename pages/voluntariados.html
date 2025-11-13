@@ -27,98 +27,169 @@
       <!-- Content loaded dinamically using JS -->
     </header>
 
-    <main>
-      <h1>Gestión de Voluntariados</h1>
-      <section>
-        <div class="container">
-          <div class="row">
-            <form class="col needs-validation" id="formulario" novalidate>
-              <h2>Alta de Voluntariado</h2>
-              <div class="card shadow-sm p-4">
-                <div class="form-group">
-                  <label for="vountariadosTitulo">Título</label>
+    <main class="container my-5">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="h1 text-primary fw-bold">Gestión de Voluntariados</h1>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <section class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h2 class="h5 mb-0">
+                <i class="bi bi-plus-circle me-2"></i>Nuevo Voluntariado
+              </h2>
+            </div>
+
+            <div class="card-body p-4">
+              <form id="formulario" class="needs-validation" novalidate>
+                <div class="mb-3">
+                  <label for="voluntariadosTitulo" class="form-label"
+                    >Título <span class="text-danger">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
-                    id="vountariadosTitulo"
+                    id="voluntariadosTitulo"
                     name="title"
+                    placeholder="Ej: Recogida de alimentos"
                     required
                   />
+                  <div class="invalid-feedback">
+                    Por favor, escribe un título.
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="vountariadosUsuario">Usuario</label>
+
+                <div class="mb-3">
+                  <label for="voluntariadosEmail" class="form-label"
+                    >Email <span class="text-danger">*</span></label
+                  >
                   <input
-                    type="text"
+                    type="email"
                     class="form-control"
-                    id="vountariadosUsuario"
-                    name="author"
+                    id="voluntariadosEmail"
+                    name="email"
+                    placeholder="contacto@email.com"
                     required
                   />
+                  <div class="invalid-feedback">Introduce un email válido.</div>
                 </div>
-                <div class="form-group">
-                  <label for="vountariadosFecha">Fecha</label>
+
+                <div class="mb-3">
+                  <label for="voluntariadosFecha" class="form-label"
+                    >Fecha <span class="text-danger">*</span></label
+                  >
                   <input
                     type="date"
                     class="form-control"
-                    id="vountariadosFecha"
+                    id="voluntariadosFecha"
                     name="date"
                     required
                   />
+                  <div class="invalid-feedback">Selecciona una fecha.</div>
                 </div>
-                <div class="form-group">
-                  <label for="vountariadosDescripcion">Descripción</label>
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    id="vountariadosDescripcion"
-                    rows="3"
-                    name="description"
-                    required
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="voluntariadosSelect">Tipo</label>
+
+                <div class="mb-3">
+                  <label for="voluntariadosSelect" class="form-label"
+                    >Tipo <span class="text-danger">*</span></label
+                  >
                   <select
-                    type="radio"
-                    class="form-control"
+                    class="form-select"
                     id="voluntariadosSelect"
-                    name="category"
+                    name="type"
                     required
                   >
                     <option value="" selected disabled>
-                      Seleccione una opción
+                      Seleccione una opción...
                     </option>
-                    <option>Petición</option>
-                    <option>Oferta</option>
+                    <option value="Petición">Petición</option>
+                    <option value="Oferta">Oferta</option>
                   </select>
+                  <div class="invalid-feedback">Debes elegir un tipo.</div>
                 </div>
-                <button type="submit" class="btn btn-primary altaBtn">
-                  Dar de Alta
-                </button>
-              </div>
-            </form>
 
-            <div class="col">
-              <h2>Consulta y Borrado de Voluntariados</h2>
-              <table class="table table-striped table-bordered" id="tabla">
-                <thead>
-                  <tr>
-                    <th scope="col">Título</th>
-                    <th scope="col">Usuario</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody id="tablaVoluntariado">
-                  <tr></tr>
-                </tbody>
-              </table>
+                <div class="mb-4">
+                  <label for="voluntariadosDescripcion" class="form-label"
+                    >Descripción <span class="text-danger">*</span></label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="voluntariadosDescripcion"
+                    name="description"
+                    rows="4"
+                    placeholder="Detalles de la actividad..."
+                    required
+                  ></textarea>
+                  <div class="invalid-feedback">
+                    La descripción es obligatoria.
+                  </div>
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary altaBtn">
+                    <i class="bi bi-save me-2"></i>Dar de Alta
+                  </button>
+                </div>
+              </form>
+
+              <div id="mensaje-sistema" class="mt-3"></div>
             </div>
-          </div>
+          </section>
         </div>
-      </section>
+
+        <div class="col-lg-8">
+          <section class="card shadow-sm h-100">
+            <div
+              class="card-header bg-light d-flex justify-content-between align-items-center"
+            >
+              <h2 class="h5 mb-0">
+                <i class="bi bi-list-ul me-2"></i>Listado Actual
+              </h2>
+            </div>
+
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table
+                  class="table table-hover table-striped mb-0 align-middle"
+                  id="tabla"
+                >
+                  <thead class="table-light">
+                    <tr>
+                      <th scope="col">Título</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Descripción</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col" class="text-end">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaVoluntariado"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-12">
+          <section class="card shadow-sm">
+            <div class="card-header bg-light">
+              <h2 class="h5 mb-0">
+                <i class="bi bi-bar-chart-fill me-2"></i>Estadísticas
+              </h2>
+            </div>
+            <div class="card-body text-center">
+              <div style="overflow-x: auto">
+                <canvas
+                  id="graficoVoluntariados"
+                  width="900"
+                  height="300"
+                  style="max-width: 100%; height: auto"
+                ></canvas>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
     </main>
 
     <footer id="footer">
@@ -126,7 +197,7 @@
     </footer>
 
     <script type="module" src="../logic/main.js"></script>
-    <script type="module" src="../logic/voluntariados.js"></script>
+    <script type="module" src="../logic/int_3_voluntariados.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

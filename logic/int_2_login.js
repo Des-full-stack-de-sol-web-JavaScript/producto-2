@@ -1,5 +1,6 @@
-import { userList } from '../assets/db/data.js';
+import { almacenaje } from './almacenaje.js';
 
+// Funciones de ayuda (validaciones)
 function showError(input, message) {
     input.classList.add('is-invalid');
     const feedback = input.parentElement.querySelector('.invalid-feedback');
@@ -12,7 +13,6 @@ function clearFieldError(inputs) {
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('is-invalid');
-            
             const feedback = input.parentElement.querySelector('.invalid-feedback');
             if (feedback && feedback.className.includes('invalid-feedback')) {
                 feedback.textContent = '';
@@ -36,28 +36,29 @@ function validateEmailField(email) {
 function validatePasswordField(password) {
     const value = password.value.trim();
     if (!value) return "Contraseña obligatoria.";
-    if (value.length < 6) return "Mínimo 6 caracteres.";
+    if (value.length < 8) return "Mínimo 8 caracteres.";
     return "";
 }
+
+// --- LÓGICA PRINCIPAL DEL LOGIN ---
 
 function loginPage() {
     console.log("Login Page Loaded");
 
     const loginForm = document.querySelector('#loginForm');
+    if (!loginForm) return; // Seguridad por si no carga el form
+
     const emailInput = loginForm.querySelector('#email');
     const passwordInput = loginForm.querySelector('#password');
     const loginMessage = document.querySelector('#loginMessage');
 
-    loginForm.addEventListener('submit', function(event) {
-        const inputs = [emailInput, passwordInput];
-        const emailValue = emailInput.value.trim();
-        const passwordValue = passwordInput.value.trim();
+    clearFieldError([emailInput, passwordInput]);
+
+    // Evento submit
+    loginForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Previene comportamiento por defecto
+
         let valid = true;
-
-        event.preventDefault();
-        loginMessage.innerHTML = ''; 
-
-        clearFieldError(inputs);
         const emailError = validateEmailField(emailInput);
         const passwordError = validatePasswordField(passwordInput);
 
@@ -65,33 +66,28 @@ function loginPage() {
         if (passwordError) { showError(passwordInput, passwordError); valid = false; }
         if (!valid) return;
 
-        // Validar contra userList
-        const foundUser = userList.find(user => 
-            user.email === emailValue && user.password === passwordValue
-        );
+        // 1. Llamada a loguearUsuario (Rúbrica)
+        const loginOk = almacenaje.loguearUsuario(emailInput.value.trim(), passwordInput.value.trim());
 
-        if (foundUser) {
-            // Éxito
-            const userEmailSpan = document.querySelector('.navbar-text.text-muted');
-            if (userEmailSpan) userEmailSpan.textContent = emailValue;
+        if (loginOk) {
+            // 2. Recuperamos nombre con obtenerUsuarioActivo (Rúbrica)
+            const usuarioActivo = almacenaje.obtenerUsuarioActivo();
+            
+            // 3. Feedback visual
+            loginMessage.innerHTML = `<div class="alert alert-success mt-3">¡Bienvenido/a, <strong>${usuarioActivo.nombre}</strong>!</div>`;
 
-            localStorage.setItem('loggedInUserEmail', emailValue); // Opcional
-
-            loginMessage.innerHTML = `<div class="alert alert-success mt-3">Bienvenido ${emailValue}</div>`;
-
-            loginForm.reset();
-            emailInput.classList.remove('is-invalid');
-            passwordInput.classList.remove('is-invalid');
-
-            setTimeout(() => { 
+            setTimeout(() => {
                 window.location.href = '../index.html';
-            }, 2500);
-
+            }, 2000);
         } else {
-            // Fallo
             loginMessage.innerHTML = `<div class="alert alert-danger mt-3">Correo o contraseña incorrectos.</div>`;
         }
+
+        if (!loginOk) loginForm.reset(); 
     });
 }
 
-loginPage();
+// --- CUMPLIMIENTO DE RÚBRICA: Evento DOMContentLoaded ---
+document.addEventListener('DOMContentLoaded', () => {
+    loginPage();
+});
