@@ -128,14 +128,14 @@ const almacenaje = {
     localStorage.removeItem("activeUser");
   },
 
-  getCurrentUser() {
+  obtenerUsuarioActivo() {
     const userJSON = localStorage.getItem("activeUser");
     return userJSON ? JSON.parse(userJSON) : null;
   },
 
   mostrarUsuarioActivo() {
-    return this.getCurrentUser() ? this.getCurrentUser().nombre : "-- no login --";
+    return this.obtenerUsuarioActivo() ? this.obtenerUsuarioActivo().nombre : "-- no login --";
   }
 };
 
-export default almacenaje;
+export { almacenaje };
